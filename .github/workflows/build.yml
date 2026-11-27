@@ -36,3 +36,4 @@ jobs:
         with:
           name: totem-impact-mod-jar
           path: extracted/totem-impact-mod/build/libs/*.jar
+# rebuild

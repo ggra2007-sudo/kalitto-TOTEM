@@ -1,0 +1,38 @@
+
+name: Build Totem Impact Mod
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'totem-impact-mod-source.zip'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+
+      - name: Extract mod project
+        run: unzip -q totem-impact-mod-source.zip -d extracted
+
+      - name: Build mod
+        working-directory: extracted/totem-impact-mod
+        run: gradle build
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: totem-impact-mod-jar
+          path: extracted/totem-impact-mod/build/libs/*.jar
